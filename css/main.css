@@ -1,0 +1,1430 @@
+/* 공통영역 css */
+html {
+  --color-white: #fff;
+  --color-black:#000;
+  --color-font:#1D1D1D;
+  --color-font-darkgray:#6E6E6E;
+  --color-font-lightgray:#F5F5F5;
+  --color-link:#0071E3;
+  --color-link-focus:#81B9F1;
+  --color-border:#D2D2D2;
+  --color-header:#3A3A3A;
+  --color-section:#F5F5F5;
+  --color-shadow:rgba(0,0,0,0.4);
+}
+html.fixed {
+  position:fixed;
+  overflow-y: scroll;
+  width:100%;
+}
+body {
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
+  line-height:1;
+  font-size:16px;
+  word-break:keep-all;
+  color:var(--color-font); 
+  height:10000px;
+}
+a {
+  color:var(--color-font);
+  text-decoration: none;
+}
+img {
+  display:block;
+  user-select:none;
+  -webkit-user-drag: none;
+}
+p {
+  line-height:1.6;
+}
+sup {
+  margin-right:6px;
+  font-size:.7em;
+  vertical-align: top;/* 윗첨자글자이므로 수직정렬을 위쪽으로 해준다. */
+}
+
+/* Inner */
+.inner {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position:relative; /* 앞으로 생길 많은 inner의 후손 요소들이 absolute로 사용될수있도록 미리 position값을 넣어둠 */
+}
+
+/* Btn */
+.btn {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:24px;
+  padding:0 10px;
+  border:none;
+  border-radius:100px;
+  outline:none;
+  font-size:11px;
+  line-height:1;
+  color:var(--color-white);
+  background-color:var(--color-link);
+  cursor:pointer;
+
+}
+.btn:hover {
+  opacity:0.7;
+}
+.btn:focus { /* 이렇게 구현하는 이유는 outline이라는 속성보다 제어하기 더 편하고 요소의 레이아웃에 영향을 주지 않기 때문임 그리고 그림자 부분을 블러처리 하지 않아서 마치 선처럼 보이게 하여 처리하는 것임 */
+  box-shadow: 0 0 0 4px var(--color-link-focus);
+}
+
+/* Background image text */
+.bgtext {
+  display:block;
+  text-indent: -9999px;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:contain;
+}
+
+/* Links */
+.links { /* 두개가 있을때 사용하는 클래스로 개별적인 꺽쇠라던지 그런거는 link 클래스에 만들어두고 두개 이상일때의 각 링크들 사이의 공간이나 배열등을 설정해 주기 위해서 links를 사용함 추가적인 이유로 앞으로 두개의 링크를 사용하는 경우가 있는데 그때마다 사이의 공간과 배열이 다르면 안되므로 정해놓고 일정하게 배열이 되도록함 div로 묶고 해당 div에 links 클래스를 줘서 두개의 사이의 공간이나 배열들을 사용한다. */
+  display:flex;
+  justify-content:center;
+  gap:40px;
+}
+a.link { /* 한개일때 사용하는 클래스 */
+  color:var(--color-link);
+  font-size:19px;
+  line-height:1.3;
+}
+a.link:hover {
+  text-decoration:underline;
+}
+a.link::after {
+  content:" >"; /* 애초에 꺽쇠를 그냥 사용하는 곳마다 주면 안되나 싶지만 그래도 된다. 당연히.. 그러나 사용성을 위하여 사살싱 모듈화를 시켜놓고 반복적인 꺽쇠를 사용하는 아이들이 클래스만 사용해서 쉽게 사용할수있도록 하기 위해서 이렇게 하는 것이다. */
+}
+
+/* Feature */
+.feature {
+  display:flex;
+}
+
+
+/* Figures */
+.figures {
+  flex-grow:1;
+  position:relative;
+}
+.figures figure,
+.figures figcaption {
+  position:absolute; /* 이와 같이 포지션을 absolute로 하고 왼쪽 위로 정렬시킨다음에 각각의 피규어에 맞게 따로 translate로 이동시키는 이유는 relative라면 중간에 요소가 생기거나 기존 요소가 사라지면 구조가 무너지게 되므로 영향을 받지 않도록 absolute로 하고 같은 곳에서 필요한 만큼만 이동하도록 전부 같은곳에서 시작하도록 top:0; left:0;을 준다.그리고 이상태에서 transform의 translate로 위치이동을 시키면 요소들이 사라지거나 추가되더라도 각각의 요소들은 절대적인 위치를 잡고있는것이므로 구조가 무너지지 않음 */
+  top:0;
+  left:0;
+}
+.figures figcaption * {
+  position:absolute;
+  top:0;
+  left:0;
+} 
+/* Infos */
+.infos{
+  display:flex;
+  flex-direction:column;
+  position:relative; /* 인포이미지가 피규어에 가려 잘리는 문제를 position을 주고 z-index값을 줘서 해결 */
+  z-index:1;
+}
+.infos.infos--center {
+  justify-content: center;
+}
+.infos.infos--end {
+  justify-content: flex-end;
+}
+.info {
+  max-width:330px;
+  margin-bottom:24px;
+  transition:1s;
+  transform:translate(0, 100px);
+  opacity:0;
+}
+.info.show {
+  transform: translate(0, 0);
+  opacity:1;
+}
+.infos--large .info {
+  max-width:410px;
+}
+.info .icon {
+  width:100px;
+  height:100px;
+  margin:0 0 -15px -30px;/* 한변의 길이가 100px인 정사각형 모양의 영역이 생길텐데 이때 아이콘이 훨씬 작아서 영역안에 빈공간이 생기므로 아래의 글과 너무 떨어져보여서 아래로 -15px을 주어 조금더 붙여주었고 같은 이유로 왼쪽에도 너무 떨어져보이면 줄이 안맞는것 같으므로 -30px을 해서 당김 */
+  animation:sprite-icon 3s steps(1) infinite;
+}
+.info .icon.icon--chip         { background-image: url("../images/sprite_chip.png"); }
+.info .icon.icon--faster       { background-image: url("../images/sprite_faster.png"); }
+.info .icon.icon--neural       { background-image: url("../images/sprite_neural.png"); }
+.info .icon.icon--apps         { background-image: url("../images/sprite_apps.png"); }
+.info .icon.icon--battery      { background-image: url("../images/sprite_battery.png"); }
+.info .icon.icon--display      { background-image: url("../images/sprite_display.png"); }
+.info .icon.icon--true-tone    { background-image: url("../images/sprite_true_tone.png"); }
+.info .icon.icon--center-stage { background-image: url("../images/sprite_center_stage.png"); }
+.info .icon.icon--front-camera { background-image: url("../images/sprite_front_camera.png"); }
+.info .icon.icon--back-camera  { background-image: url("../images/sprite_back_camera.png"); }
+.info .icon.icon--scan         { background-image: url("../images/sprite_scan.png"); }
+.info .icon.icon--download     { background-image: url("../images/sprite_download.png"); }
+.info .icon.icon--wifi         { background-image: url("../images/sprite_wifi.png"); }
+.info .icon.icon--lte          { background-image: url("../images/sprite_lte.png"); }
+.info .icon.icon--pencil       { background-image: url("../images/sprite_pencil.png"); }
+.info .icon.icon--keyboard     { background-image: url("../images/sprite_keyboard.png"); }
+.info .icon.icon--notes        { background-image: url("../images/sprite_notes.png"); }
+.info .icon.icon--covers       { background-image: url("../images/sprite_covers.png"); }
+.info p {
+  font-size:21.5px;
+  font-weight:600;
+  line-height:1.5;
+}
+.info a.link { /* 인포안에 있는 link 버튼의 배열등을 조정하려고 만든곳 */
+  display:block; /* 위아래로 여백을 주려면 display가 inline이면 안됨 */
+  margin-top:44px;/* 위에 위치할 info와 너무 딱붙어있어서 위쪽 여백을 줌 */
+  font-size:19.5px;
+}
+/* Whitebox  */
+.whitebox {
+  max-width:1386px;
+  margin:0 auto;
+  padding:100px 30px;
+  border-radius: 30px;
+  box-sizing: border-box;
+  background-color:var(--color-white);
+}
+.whitebox.whitebox--transparent {
+  background-color:transparent;
+}
+.whitebox .icon {
+  margin-bottom:20px;
+}
+.whitebox h1 {
+  font-size:50px;
+  font-weight:600;
+  line-height:1.3;
+}
+.whitebox p {
+  margin-top:20px;
+  font-size:19px;
+}
+.whitebox a.link {
+  display:block;
+  margin-top:26px;
+}
+
+/* Header */
+header {
+  --header-height:44px; /* 높이값을 변수로 저장하는 이유는 header의 height인 44px에 맞춰서 다들 44px의 값을 가지고 있는데 만약 44px보다 값이 늘어나거나 줄어들면 맞춰서 값을 전부다 하나 하나 바꿔줘야 하기대문에 변수로 저장해서 값이 변하더라도 직접 하나 하나 변경할 필요없게 만듦 */
+  background-color:var(--color-header);
+  position:relative;
+  z-index:9;
+}
+header .inner {
+  max-width:1020px; /* width를 지정하지 않는다면 요소의 width값은 안의 콘텐츠들의 width값만큼을 가짐
+                      그러나 max-width가 있다면 커지다가도 max-width값에 다다르면 더이상 콘텐츠
+                      즉 요소의 width가 커질수없음을 뜻함 그러나 width값이 줄어드는 것은 계속 해서 줄어들수있음
+                      다시 말해 화면을 아무리 광활하게 만들어줘도 넓어지는 넓이에 맞춰
+                      늘어나는 것이 아니라 1020의 여유공간이 나올때까지 늘어나다가
+                      화면이 그이상으로 늘어난다면 1020초과로 늘어날수없고
+                      화면을 엄청나게 줄이면 줄이는 대로 계속 해서 맞춰 줄어든다.
+                       */
+
+  /* box-sizing:border-box;
+  border: 2px solid blue; */
+}
+header ul.menu {
+  height:var(--header-height);
+  display:flex;
+  justify-content:space-between;
+}
+header ul.menu > li {
+  display:flex;
+  position:relative;
+  transition: 0.4s;
+                         /* 여기서 flex-item들이 기본적으로 align stretch 된다는 것을 이용하여 자식인
+                            a의 영역을 li의 영역 만큼으로 늘어나도록 align-items의 값을 넣지 않음 여기서
+                            align-items의 값을 center로 넣으면 a자체가 li안에서 중앙으로 움직이겠지만
+                            stretch값을 못받으므로 위아래 여백이 생기고 해당 영역은 클릭해도 아무일도일어
+                            나지 않음 
+                            간단히 말해 li에 display를 flex로 준이유는 a를 stretch로 영역전체를 자치하도록
+                            하기 위해서이고 a에 display를 flex로 준이유는 a안의 값을 a안의 가운데로 정렬하도록
+                            한것임.*/
+}
+
+header ul.menu > li > a{
+  padding:0 10px;
+  font-size:11px;
+  display:flex;
+  align-items:center;
+  color:var(--color-font-lightgray);
+  opacity:0.8;
+  text-decoration:none;
+                           /* 위에서 a의 영역을 li영역만큼으로 늘렸으므로 a안의 요소를 부모인
+                              요소의 가운로 정렬을 할수있도록 a에 display를 flex로 줌 */
+
+}
+
+header ul.menu > li.apple-logo > a,
+header ul.menu > li.search-starter > a,
+header ul.menu > li.basket-starter > a{
+  width:14px;
+  text-indent:-9999px;
+  background-repeat:no-repeat;
+  background-position:center 13px;
+}
+header ul.menu > li.apple-logo > a {
+  background-image: url("../images/header_apple.svg");
+}
+header ul.menu > li.search-starter > a {
+  background-image: url("../images/header_search.svg");
+}
+header ul.menu > li.basket-starter > a {
+  background-image: url("../images/header_bag.svg");
+}
+
+header ul.menu > li >  a:hover {
+  opacity:1;
+}
+/* Header / Menu / Basket */
+header .basket {/* 장바구니 드롭다운 메뉴영역 */
+  width:290px;
+  padding:10px 20px;
+  border: 1px solid var(--color-border);
+  border-radius:10px;
+  box-sizing:border-box;
+  background-color:var(--color-white);
+  position:absolute;
+  top:calc(100% + 4px);
+  right:-6px;
+  visibility:hidden;
+  transition:0.4s;
+  opacity:0;
+}
+header .basket.show {
+  visibility: visible;
+  opacity:1; /* 비저블리티와 항상 같이 사용함을 주의! 이걸빼면 효과가 이상해짐 */
+}
+header .basket .arrow {
+  width:20px;
+  height:10px;
+  position:absolute;
+  top:-10px;
+  right:12px;
+  overflow:hidden;
+}
+header .basket .arrow::before {
+  content:"";
+  width:12px;
+  height:12px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+  transform: rotate(45deg);
+  transform-origin:0 0;
+  position:absolute;
+  top:0;
+  left:50%;
+}
+header .basket .message {
+  padding:30px 0;
+  font-size:13px;
+  color:var(--color-font-darkgray);
+  text-align:center;
+}
+header .basket ul {
+  margin-top:10px;
+
+}
+header .basket ul li {
+  border-top:1px solid var(--color-border);
+}
+header .basket ul li a {
+  display:block;
+  font-size: 13px;
+  color:var(--color-link);
+  padding:14px;
+}
+header .basket ul li a:hover {
+  text-decoration:underline;
+}
+
+/* Header / Search */
+header .search-wrap {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  visibility:hidden;
+  opacity:0;
+  transition:0.4s;
+}
+header .search {
+  max-width:680px;
+  margin:0 auto;
+  position:relative;
+}
+header .search .shadow {
+  position:fixed; /* 뷰포트를 기준으로 위치함 아래에서 width 100%, height 100%를 해줌으로써 전체 뷰포트를 기준으로 100% 그러니까 전체 html문저 전체를 대상으로 하는 것 */
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background-color:var(--color-shadow);
+}
+header .search .textfield {
+  position:relative;
+}
+header .search input {
+  width:100%;
+  height:var(--header-height);
+  padding:0 40px;
+  border:none;
+  outline:none;
+  box-sizing:border-box;
+  background-color:transparent; /* 투명한색을 의미 */
+  font-size:17px;
+  color: var(--color-white);
+}
+header .search .search-icon {
+  width: 40px;
+  height:var(--header-height);
+  background-image: url("../images/header_search.svg");
+  background-repeat:no-repeat;
+  background-position:center;
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0.4;
+}
+header .search .search-closer {
+  width: 40px;
+  height:var(--header-height);
+  background-image: url("../images/header_close.svg");
+  background-repeat:no-repeat;
+  background-position:center;
+  position:absolute;
+  top:0;
+  right:0;
+  opacity:0.4;
+  cursor:pointer;
+}
+header .search .search-closer:hover {
+  opacity:1;
+}
+header .search .autocompletes {
+  width:100%;
+  padding:26px 40px 20px;
+  border-radius:0 0 18px 18px;
+  /* border:1px solid red; */
+  box-sizing:border-box;
+  background-color:var(--color-white);
+  position:absolute;
+  top: var(--header-height);
+  left:0;
+}
+header .search .autocompletes h3 {
+  font-size:12px;
+  color:var(--color-font-darkgray);
+  margin-bottom:12px;
+}
+
+header .search .autocompletes ul li a {
+  display:block; /* 애초에 inline요소는 글자 요소로 옆에 요소들이 존재할수있도록 만든 요소이고 block요소는 한줄을 전부 차지하도록 혹은 width값과 height값을 초기화 하여 원하는 크기로 조절하고 한줄에 한 요소인 만큼 요소의 사이간의(세로) 설정을 하기위해선 block으로 해야 한다. 왜냐면 요소의 사이(세로)의 공간을 조정하고 관리하는건 원래 block이 하는 것이므로.. inline은 반면에 block보다 한줄에 있는 글자를 두껍게 한다거나 등의 역활을 하는것은 inline이 강력하다. */
+  margin:0 -14px;
+  padding:10px 0 10px 30px;
+  font-size:14px;
+  cursor:pointer;
+}
+header .search .autocompletes ul li a:hover {
+  background-color:var(--color-section);
+  color:var(--color-link);
+}
+header .search input,
+header .search .search-icon,
+header .search .autocompletes h3,
+header .search .autocompletes li {
+  transition: 0.95s;
+  transform: translate(100px, 0);
+}
+header.searching ul.menu > li {
+  transform: scale(0.7);
+  opacity:0;;
+}
+header.searching .search-wrap {
+  visibility:visible;
+  opacity:1;
+  transition-delay: 0.2s; /* 요소가 나타날때 위의 메뉴가 사라지고 그다음 0.2s후에 사라지게함 자연스럽게 사라지도록 하기 위함이고 없어지는건 한번에 없어져야 되니 여기에만 사용함 */
+
+
+
+                /* display이외의 값들은 어떻게 다시 똑같이 써주지 않아도 동일하게 되냐? 사실 이건 상속되는 것이 아니라 우선순위 관계이기 때문이다. header와 header.search는 모두 header라는 요소를 칭하지만 우선순위는 header.search가 조건이 하나 더있어 높으므로 header.search에 작성된 display가 header에 작성된 display를 이겨 값이 바뀌고
+                   나머지값들은 우선순위 비교할 대상이 없으니 결국은 header인 header.serach에도 적용이 되는것이다. */
+}
+header.searching .search input,
+header.searching .search .search-icon,
+header.searching .search .autocompletes h3,
+header.searching .search .autocompletes li {
+  transition-delay: 0.2s;
+  transform: translate(0, 0);
+}
+
+
+
+/* Navigation */
+nav {
+
+  background-color:rgba(255,255,255,0.7);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--color-border);
+  position:sticky;
+  top:0;
+  z-index:8;
+}
+nav .inner {
+  max-width:1000px;
+  height:52px;
+  display:flex;
+  align-items:center
+}
+nav h1 {
+  flex-grow:1;
+  font-size:22px;
+  font-weight:500;
+
+}
+nav .menu {
+  display:flex;
+  gap:12px;
+  margin-right:18px;
+}
+nav .menu li {
+
+}
+nav .menu li a{
+  display:block;
+  font-size:11px;
+  padding:6px;
+}
+nav .menu li a:hover {
+  color:var(--color-link);
+
+}
+nav ul li.active a {
+  opacity:0.5;
+  cursor:default;
+}
+nav ul li.active a:hover {
+  color:var(--color-font); /* 위에서 a에 hover했을때 파란색이 되도록 했었는데 해당 부분은 색이 변하면 안되므로 원래의 글자색을 가져와서 설정해준다. */
+}
+
+/* Main */
+main {
+  overflow-x: hidden; /* 넘치는 것들을 전부 안보이게 해서 가로 스크롤바가 생기지 않도록함 */
+}
+
+/* Hero */
+.hero {
+  background-color:var(--color-section);
+}
+.hero .inner {
+  padding-bottom:110px;
+}
+.hero h1 {
+  background-image:url("../images/hero_ipad_text.png");
+  width:221px;
+  height:91px;
+  position:absolute;
+  transform:translate(624px, 235px);
+  z-index:1;
+}
+.hero .figures {
+  height:808px;
+}
+.hero figure {
+  transform:translate(74px,-64px);
+}
+.hero figure img {
+
+}
+.hero figure figcaption {
+
+}
+.hero figure figcaption .caption-camera {
+  width:120px;
+  height:84px;
+  background-image: url("../images/hero_ipad_caption_camera.png");
+  transform:translate(43px, 580px)
+}
+.hero figure figcaption .caption-chip {
+  width:95px;
+  height:43px;
+  background-image:url("../images/hero_ipad_caption_chip.png");
+  transform:translate(589px, 510px);
+}
+.hero figure figcaption .caption-storage {
+  width:80px;
+  height:43px;
+  background-image:url("../images/hero_ipad_caption_storage.png");
+  transform:translate(627px, 631px);
+}
+.hero h2 {
+  width:738px;
+  height:145px;
+  margin:0 auto;
+  background-image:url("../images/hero_headline.png");
+}
+.hero p.pricing {
+  margin-top:40px;
+  font-size:24px;
+  font-weight:600;
+  text-align:center;
+}
+.hero p.description {
+  width: 88%; /* br태그로 줄바꿈 처리를 하지 않고 화면에 글자가 표시될 가로 너비를 생각하며 width값으로 p태그 영역자체를 제한하여 디자인 하는것이 화면이 변할때도 여전히 비율에 맞게 자연스럽게 출력되므로 좋다. */
+  margin:18px auto 0;
+  font-size:19px;
+  text-align:center;
+}
+.hero .links {
+  margin-top:30px;
+}
+
+
+/* Power */
+.power {
+  margin-top:110px;
+}
+/* Power / Multiple Apps */
+.power .multiple-apps h1 {
+  width:500px;
+  height:280px;
+  background-image:url("../images/power_headline.png");
+  transform:translate(104px, 0);
+}
+.power .multiple-apps .figures {
+  height:773px;
+}
+.power .multiple-apps figcaption {
+  width:138px;
+  height:46px;
+  background-image:url("../images/power_multiple_apps_caption.png");
+  transform:translate(703px, -47px);
+}
+/* Power / Arcade */
+.power .arcade{
+  margin-top:55px;
+}
+.power .arcade .figures {
+  height:600px;
+}
+.power .arcade figure {
+  transform:translate(-347px, -90px);
+}
+.power .arcade figcaption {
+  width:150px;
+  height:77px;
+  background-image: url("../images/power_arcade_caption.png");
+  transform:translate(483px, 653px);
+}
+/* Power / Create */
+.power .create {
+  margin-top:55px;
+}
+.power .create .figures {
+  height:772px;
+}
+.power .create figure {
+  transform:translate(-25px, 50px);
+}
+.power .create figcaption {
+  width:142px;
+  height:46px;
+  background-image:url("../images/power_create_caption.png");
+  transform: translate(543px, 908px);
+}
+/* Display */
+.display{
+  margin-top:450px;
+}
+
+/* Display / Notes */
+.display .notes h1 {
+  width:630px;
+  height:370px;
+  background-image:url("../images/display_headline.png");
+  transform:translate(104px, 0);
+}
+.display .notes .figures {
+  height:814px;
+  margin-top:26px;
+}
+.display .notes figcaption {
+  width:145px;
+  height:45px;
+  background-image:url("../images/display_notes_caption.png");
+  transform:translate(707px, -16px);
+}
+
+/* Display / Shareplay */
+.display .shareplay {
+  margin-top:55px;
+}
+.display .shareplay .figures {
+  height:630px;
+}
+.display .shareplay figure {
+  transform:translate(-360px, 0);
+}
+.display .shareplay figcaption {
+  width:110px;
+  height:38px;
+  background-image: url("../images/display_shareplay_caption.png");
+  transform:translate(300px, 658px);
+}
+
+/* Camera */
+.camera {
+  margin-top:303px;
+}
+.camera .stage {
+  position:relative;
+}
+.camera .stage h1 {
+  width:650px;
+  height:450px;
+  background-image:url("../images/camera_headline.png");
+  transform:translate(-25px, 0);
+}
+.camera .stage .info {
+  position:absolute; /* infos를 사용하지 않고 info만 사용했으니 infos에 정해둔 정렬클래스를 사용할수없고 그래서 직접 배치하는 모습 */
+  top:150px;
+  right:0;
+}
+.camera .stage .figures {
+  height:770px;
+  margin-top:24px;
+}
+.camera .stage figure {
+  transform:translate(90px, 0);
+}
+.camera .stage video {
+  position:absolute;
+  top:36px;
+  left: 76px;
+  -webkit-mask-image: url("../images/camera_video_mask.png");
+  mask-image: url("../images/camera_video_mask.png");
+}
+.camera .stage .controller--play,
+.camera .stage .controller--pause {
+  user-select: none;
+  color:var(--color-link);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transform: translate(428px, -134px) rotate(-3deg); /* position이 absolute가 아닌데 위치를 조정했으니 원래 위치에는 빈공간이 생길것 또한 위의 동영상은 absolute여서 지금 여기 이요소의 크기만큼만 원래 있던 곳에 빈공간이 생기게됨 */
+}
+.camera .stage .controller--play:hover,
+.camera .stage .controller--pause:hover {
+  text-decoration:underline;
+}
+.camera .stage .controller--play.hide,
+.camera .stage .controller--pause.hide {
+  display:none;
+}
+.camera .stage .controller--play img,
+.camera .stage .controller--pause img {
+  width:20px;
+  margin-top:-2px;
+}
+.camera .stage figcaption {
+  width:130px;
+  height:110px;
+  background-image: url("../images/camera_hardware_caption.png");
+  transform:translate(-116px, 383px);
+}
+
+/* Camera / Edit */
+.camera .edit .figures {
+  height:910px;
+}
+.camera .edit figure {
+  transform:translate(20px,0);
+}
+.camera .edit figcaption {
+  width:130px;
+  height:47px;
+  background-image:url("../images/camera_edit_caption.png");
+  transform:translate(27px, 905px);
+}
+
+
+/* Wireless */
+.wireless {
+margin-top:202px;
+}
+/* Wireless / Facetime */
+.wireless .facetime h1 {
+  width:730px;
+  height:330px;
+  background-image:url("../images/wireless_headline.png");
+  transform:translate(104px, 0);
+}
+.wireless .facetime .figures {
+  height:773px;
+}
+.wireless .facetime figure {
+  transform:translate(-68px, 0);
+}
+.wireless .facetime figcaption {
+  width:139px;
+  height:46px;
+  background-image:url("../images/wireless_facetime_caption.png");
+  transform:translate(843px, -49px);
+}
+/* Wireless / Files */
+.wireless .files figure { /* files의 figures에 height값을 이번에는 주지 않은 이유는 바로 앞전에는 요소가 figure뿐이였는데 그마저도 absolute라 hieght를 직접준것이고 이번에는 infos에 height값이 있기 때문에 굳이 주지 않아도 infos의 height값을 height값으로 가지게 됨 */
+  transform:translate(34px, -34px);
+}
+.wireless .files figcaption {
+  width:127px;
+  height:46px;
+  background-image:url("../images/wireless_files_caption.png");
+  transform:translate(96px, 639px);
+}
+
+/* Accessories  */
+.accessories {
+  margin-top:195px;
+}
+.accessories h1 {
+  width:550px;
+  height:343px;
+  background-image: url("../images/accessories_headline.png");
+  margin: 0 auto;
+}
+.accessories .figures{
+  height: 1021px;
+  margin-top:34px;
+}
+.accessories figure { /* figuers 안의 figcaption 안에 있는 모든 요소들을 absolute 포지션을 갖고 figcaption의 왼쪽위에 배치되도록 하는데 왜 이미지에는 그런게 없는데 배치가 잘되고 있냐? 이유는 이미지와 figcaption이 포함된 figure자체를 figures안에서 이미지의 자리에 맞게 transform의 translate로 이동시키고 그 figure안의 왼쪽 위에 있는 figcaption혹은 figcaption안의 요소들을 거기서 부터 transform의 translate로 이동시켜 위치를 잡기 때문임. */
+  transform:translate(-24px, 0);
+}
+.accessories figcaption .caption-memo {
+  width:169px;
+  height:41px;
+  background-image: url("../images/accessories_caption_memo.png");
+  transform:translate(790px, -52px);
+
+}
+.accessories figcaption .caption-supports {
+width:200px;
+height:70px;
+background-image:url("../images/accessories_caption_supports.png");
+transform:translate(163px, 821px);
+}
+.accessories .infos {
+  flex-direction:row;
+  flex-wrap:wrap;
+  justify-content:space-around;
+}
+
+.ipados {
+  margin-top:212px;
+}
+.ipados h1 {
+  width:530px;
+  height:400px;
+  margin:0 auto;
+  background-image:url("../images/ipados_headline.png");
+}
+.ipados .infos {
+  margin-top:44px;
+  align-items:flex-end;
+}
+.ipados .figures {
+  height:782px;
+  display:flex;
+}
+.ipados .figures > div {
+  flex-grow:1;
+  position:relative;
+}
+.ipados .figure-split-view figure {
+  transform:translate(-205px, -312px);
+}
+.ipados .figure-split-view figcaption {
+  width:163px;
+  height:53px;
+  background-image:url("../images/ipados_split_view_caption.png");
+  transform:translate(200px, -38px);
+}
+.ipados .figure-widgets figure {
+  transform:translate(237px, 43px);
+}
+.ipados .figure-widgets figcaption {
+  width:161px;
+  height:46px;
+  background-image:url("../images/ipados_widgets_caption.png");
+  transform:translate(257px, 497px);
+}
+.ipados .figure-quick-note figure {
+  transform:translate(-625px, 232px);
+}
+.ipados .figure-quick-note figcaption {
+  width:82px;
+  height:97px;
+  background-image:url("../images/ipados_quick_note_caption.png");
+  transform:translate(511px, 470px);
+}
+
+/* Apps */
+.apps {
+  margin-top:368px;
+}
+.apps h1 {
+  width:500px;
+  height:264px;
+  background-image:url("../images/apps_headline.png");
+  transform:translate(17px, 0);
+}
+.apps .infos {
+  margin:36px 0 0 82px;
+}
+.apps .figures {
+  display:flex;
+  height:788px;
+}
+.apps .figures > div {
+  flex-grow:1;
+  position:relative;
+}
+.apps .figure-masterclass figure {
+  transform:translate(578px, -431px);
+}
+.apps .figure-masterclass figcaption {
+  width:100px;
+  height:25px;
+  background-image:url("../images/apps_masterclass_caption.png");
+  transform:translate(26px, 690px);
+}
+.apps .figure-adobe figure {
+  transform:translate(-515px, 85px);
+}
+.apps .figure-adobe figcaption {
+  width:105px;
+  height:24px;
+  background-image:url("../images/apps_adobe_caption.png");
+  transform:translate(544px, 514px);
+}
+.apps .figure-fantasian figure {
+  transform:translate(103px, 318px);
+}
+.apps .figure-fantasian figcaption {
+  width:74px;
+  height:22px;
+  background-image:url("../images/apps_fantasian_caption.png");
+  transform:translate(24px, 483px);
+}
+.apps .figure-books figure {
+  transform:translate(-133px, -150px);
+}
+.apps .figure-books figcaption{
+  width:50px;
+  height:27px;
+  background-image:url("../images/apps_books_caption.png");
+  transform:translate(397px, 707px);
+}
+.apps .figure-goodnotes figure {
+  transform:translate(-93px, 68px);
+}
+.apps .figure-goodnotes figcaption{
+  width:99px;
+  height:26px;
+  background-image:url("../images/apps_goodnotes_caption.png");
+  transform:translate(24px, 690px);
+}
+
+
+/* Privacy */
+.privacy {
+  margin-top:238px
+}
+.privacy h1{
+  width:482px;
+  height:237px;
+  background-image:url("../images/privacy_headline.png");
+  margin-left:auto; /* 요소의 왼쪽 여백이 자동으로 채워지게함 */
+  position:relative;
+  z-index:1; /* figures의 이미지에 깔리는 현상을 해결하려고 position과 z-index값을 줌 */
+  transform:translate(57px,0);
+}
+.privacy .infos {
+  margin-top:38px;
+  align-items: flex-end;/* 수평의 끝쪽으로 정렬하기때문에 justify-content를 생각할수도있지만 지금 infos는 위에서 정해둔 flex-direction에 의해 column을 주축으로 갖고있다. 그렇기 때문에 교차축을 관장하는 align-item혹은 align-content를 사용해야 하는데 여기서 flex-item은 하나뿐이라. align-items가 사용됨 */
+}
+.privacy figure {
+  transform:translate(-215px, -500px);
+}
+.privacy figcaption .caption-apple-id {
+  width:170px;
+  height:26px;
+  background-image:url("../images/privacy_caption_apple_id.png");
+  transform:translate(195px, -13px);
+}
+.privacy figcaption .caption-touch-id {
+  width:150px;
+  height:31px;
+  background-image:url("../images/privacy_caption_touch_id.png");
+  transform:translate(533px, 485px);
+}
+
+/* Accessibility */
+.accessibility {
+  margin: 266px 0 170px 0;
+}
+.accessibility h1 { /* 위치를 왼쪽 혹은 가운데 혹은 오른쪽등으로 조정해주지 않아도 그자체로 원하는 위치임 */
+  width:384px;
+  height:270px;
+  background-image:url("../images/accessibility_headline.png");
+}
+.accessibility .infos {/* infos위에 공간을 가진 블록요소가 있으니 infos는 h1아래에 오게 되고 위에 여백만 주면 위치를 왼쪽 혹은 가운데 혹은 오른쪽등으로 조정해주지 않아도 원하는 위치임 */
+  margin-top:20px;
+}
+.accessibility figure {
+  transform:translate(470px, -620px);
+}
+
+
+/* AR */
+.ar {
+  background-color:var(--color-section);
+  padding:20px 20px 0;
+}
+.ar .whitebox {
+  padding-bottom:0;
+}
+.ar .inner {
+  display:flex;
+
+}
+.ar .inner > div {
+  max-width:410px;
+  margin-top:60px;
+  margin-right:90px;
+}
+
+
+/* Environment */
+.environment {
+  padding: 20px 20px 0;
+  background-color:var(--color-section);
+  text-align:center;
+}
+.environment .icon {
+  margin: 0 auto 20px; /* 공통속성으로 만들어놨었던 whitebox 안의 icon클래스를 가진 요소의 margin-bottom:20px이 margin값이 우선순위를 가지는 곳에서 선언되어서 덮어쓰기 되어서 적용이 안되게 되었으므로 직접 여기서 다시 주면 됨 그러나 이외의 방법으로 margin-left와 margin-right에 각각 auto값을 주면 margin-bottom의 값을 덮어쓰기 하지 않으므로 원하는대로 여백이 들어갈수있음 */
+}
+.environment h1 {
+  color:#03A10E;
+}
+
+/* Accessory Shop */
+.accessory-shop {
+  background-color: var(--color-section);
+  text-align:center; /* 아래에서 flex와 align-item:center로 가운데 정렬을 했더라도 여기의 text-align:center는 여전히 필요한데 이유는 요소가 가운데 정렬이 되더라도 줄바꿈한 글씨가 요소안에서 가운데 정렬을 해야하기 때문임. */
+}
+.accessory-shop .whitebox {
+  padding-bottom:0; /* 위에서 공통속성으로 whitebox에 padding값중 bottom값도 100px이 들어가있는데 해당값을 사용하지 않기위해 새로 만들어 0값을 덮어쓰움 */
+}
+.accessory-shop .inner {
+  display:flex; /* flex로 inner안의 요소들을 가운데 정렬하는 이유는 다른것은 가운데 정렬이 문제없이 되는데 아래의 이미지가 inner보다 큰 width값을 갖으므로 margin: 0 auto를 통한 가운데 정렬이 안되고 그렇기 때문에 flex-item으로 만들어서 정렬을 시키는것. */
+  flex-direction: column;
+  align-items:center;
+}
+.accessory-shop img {
+  margin-top:50px;
+}
+
+/* Trade */
+.trade {
+  padding:20px 20px 0;
+  background-color:var(--color-section);
+  text-align: center;
+}
+
+/* Compare */
+.compare {
+  padding:20px 20px 0;
+  background-color:var(--color-section);
+  text-align:center;
+}
+.compare .items {
+  display:flex;
+  justify-content:space-around;
+  max-width:940px;
+  margin:68px auto 74px;
+}
+.compare .item {
+  width:190px;
+  padding-bottom:34px;
+  border-bottom:1px solid var(--color-border);
+
+}
+.compare .item .thumbnail {
+  height:214px;
+  margin-bottom:22px;
+  display:flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.compare .item ul.colors {
+  margin-bottom:30px;
+  display:flex;
+  justify-content: center;
+  gap:6px;
+}
+.compare .item ul.colors li {
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background-color:var(--color-font-lightgray);
+  box-shadow:inset 1px 1px 3px rgba(0,0,0, 0.1); /* 그림자는 바깥쪽에 생기지만 inset을 앞에 입력해주면 요소의 안쪽에 생기도록 할수도있다. */
+}
+.compare .item h3.name {
+  margin-bottom:4px;
+  font-size:22px;
+
+}
+.compare .item .tagline {
+  margin-bottom:20px;
+  font-size:16px;
+}
+.compare .item .price {
+  margin-bottom:10px;
+  font-size:14px;
+}
+.compare .item .btn {
+  margin:0 auto 14px;
+}
+.compare .item a.link {
+  font-size:14px;
+}
+
+
+/* Footer */
+footer {
+  background-color: var(--color-section);
+}
+/* Footer / Buy-info */
+footer .buy-info{ 
+  padding:76px 0;
+  display:flex;
+  justify-content: space-around;
+  gap:20px;
+  text-align: center;
+}
+footer .buy-info .icon {
+  width:56px;
+  height:56px;
+  margin:0 auto 10px;
+}
+footer .buy-info h3 {
+  margin-bottom:8px;
+  font-size:18px;
+  font-weight:600;
+}
+footer .buy-info p {
+  margin-bottom:12px;
+  font-size: 14px;
+}
+footer .buy-info a.link {
+  font-size:14px;
+}
+/* Footer / Warning */
+footer .warning {
+  padding:18px 0 10px;
+  border-top:1px solid var(--color-border);
+  border-bottom:1px solid var(--color-border);
+}
+footer .warning ol {
+  list-style:decimal;
+  padding-left:16px; /* 앞에 숫자가 붙는걸 계산해서 그만큼의 여백을 만들어둠 안만들면 앞으로 삐져나올것. */
+}
+footer .warning li {
+  margin-bottom:10px;
+  font-size:11px;
+  line-height:1.5;
+  color:var(--color-font-darkgray);
+}
+/* Footer / Breadcrumbs */
+footer .breadcrumbs {
+  display:flex;
+  align-items:center;
+  gap:30px;
+  margin:20px 0;
+}
+footer .breadcrumbs a {
+  font-size:12px;
+  color:var(--color-font-darkgray);
+  position:relative;
+}
+footer .breadcrumbs a.apple-logo {
+  width:16px;
+  height:16px;
+  background-image:url("../images/path_apple.svg");
+}
+footer .breadcrumbs a:hover {
+  text-decoration: underline;
+}
+footer .breadcrumbs a::after {
+  content: "";
+  width:8px;
+  height:18px;
+  background-image: url("../images/path_div.svg");
+  position:absolute;
+  top:0;
+  bottom:0;
+  right:-18px;
+  margin: auto;
+}
+footer .breadcrumbs a:last-child::after {
+  display:none; /* 마지막에도 들어가면 안됨 요소 사이사이에만 들어가야 하므로 직접 안보이게 해줌 */
+}
+/* Footer / NAvigations */
+footer .navigations {
+  margin-bottom: 40px;
+  display:flex;
+  flex-direction: column;
+  height:344px;
+  flex-wrap: wrap; /* 이와 같이 높이를 정해두고 줄바꿈되도록 해서 위치를 맞출수있고 심지어 지금은 원하는 대로 들어가지만 이것은 계산된 것임 하여튼 들어갈 공간(height)를 정해두고 줄바꿈이 가능하게 하여 두개 혹은 세개의 요소가 한 줄에 적절히 들어갈수있도록 할수있음 물론 내가 내 앱을 만들때에도 이렇게 만들수있음 일단 제일 진 요소를 기준으로 height를 정해두고 줄바꿈이 가능하게 한 이후에 요소들이 공간이 있는곳에 적절히 들어가고 만약 어떤 요소에서 줄바꿈을 강제로 하고싶다면 그냥 밑으로 padding값을 주면 height와 wrap값때문에 줄처리 되도록 해서 원하는 대로 사실상 배치가 가능함 */
+  align-content:space-between;
+}
+footer .navigations .map {
+  margin-top:24px;
+}
+footer .navigations .map h3{
+  font-size:12px;
+  font-weight:600;/* map의 제목이므로 두껍게 해서 눈에 띄게함 */
+}
+footer .navigations .map:nth-child(6) {
+  padding-bottom:100px;
+}
+footer .navigations .map li {
+  margin-top: 12px; /* 각각의 li사이의 공간을 이렇게 만듦 */
+  font-size:12px;
+}
+footer .navigations .map li a {
+  color:var(--color-font-darkgray) /* 각각의 li들은 모두 a인데 그들의 색갈을 제목보다 조금 연하게 만듦 */
+}
+footer .navigations .map li a:hover {
+  text-decoration: underline;
+}
+footer .how-to-shop {
+  font-size:12px;
+  line-height:1.4;
+  color:var(--color-font-darkgray);
+}
+footer .how-to-shop a{
+  color:var(--color-link);
+}
+footer .how-to-shop a:hover {
+  text-decoration: underline;
+}
+footer .legal {
+  margin-top:10px;
+  padding:10px 0 40px;
+  border-top:1px solid var(--color-border);
+  display:flex;
+  gap:50px;
+  font-size:12px;
+  color:var(--color-font-darkgray);
+}
+footer .legal ul {
+  flex-grow:1;
+  display:flex;
+  gap:21px;
+}
+footer .legal ul li {
+  position:relative;
+}
+footer .legal ul li::after {
+  content:"|";
+  position:absolute;
+  right:-11px;
+  color:var(--color-border);
+}
+footer .legal ul li:last-child:after {
+  display:none;
+}
+footer .legal ul li:hover a {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+/* Popup */
+.popup {
+  width:100%; /* 블록요소인데도 불구하고 자동으로 width가 100%가 안되는 이유는 position이 fixed여서 흐름에서 벗어나서 부모를 갖지 않기때문. */
+  position:fixed;
+  top:calc(50% - 290px);
+  margin:0 auto;
+  z-index:9;
+}
+.popup.hide {
+  visibility: hidden;
+  opacity:0;
+  transition:0.6s;
+}
+.popup .popup-inner {
+  margin:0 auto;
+  padding: 30px;
+}
+.popup .popup-inner .popup-area {
+  background-color:#fff;
+  padding:20px;
+  border: 1px solid var(--color-link-focus);
+  width:300px;
+  height: 370px;
+  margin:0 auto;
+  position:relative;
+  border-radius: 40px;
+  box-sizing:border-box;
+  /* box-shadow:5px 1px 3px rgba(0,0,0, 0.1) */
+}
+.popup .popup-area .pop-main {
+  margin:20px 0 15px 0;
+  font-size:40px;
+  font-weight:700;
+  color:#81B9F1;
+  text-align:center;
+}
+.popup .popup-area .line {
+  /* margin-top:15px; */
+  width:80%;
+  border:1px solid rgb(229, 229, 229);
+  margin:0 auto;
+}
+.popup .popup-area .text {
+  width:100%;
+  margin-top:40px;
+  text-align:center;
+  color:var(--color-font-darkgray);
+  line-height: 24px;
+}
+.popup .popup-area .text span {
+  text-decoration: underline;
+}
+.popup .popup-area .check {
+  width:120px;
+  height:35px;
+  position:relative;
+  margin:40px auto 34px;
+  cursor:pointer;
+  background-color:#0071E3;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  border-radius:25px;
+  transition:background-color 0.4s, border 0s 0.16s;
+}
+.popup .popup-area .check:hover {
+  background-color:#fff;
+  color: #0071E3;
+  border:2px solid #0071E3;
+  box-sizing:border-box;
+}
+.popup .popup-area .line.line-small {
+  width:32%;
+}
+.popup .popup-area .popup-apple-logo {
+  width:200px;
+  height:35px;
+  background-image:url("../images/lightnin-color.png");
+  position:absolute;
+  left:15%;
+  bottom:9px;
+}
+
+
+
+
+@keyframes sprite-icon {
+  /* 1~10 */
+  0.00% { background-position: 0 0; }
+  1.67% { background-position: -100px 0; }
+  3.33% { background-position: -200px 0; }
+  5.00% { background-position: -300px 0; }
+  6.67% { background-position: -400px 0; }
+  8.33% { background-position: -500px 0; }
+  10.00% { background-position: 0 -100px; }
+  11.67% { background-position: -100px -100px; }
+  13.33% { background-position: -200px -100px; }
+  15.00% { background-position: -300px -100px; }
+
+  /* 11~20 */
+  16.67% { background-position: -400px -100px; }
+  18.33% { background-position: -500px -100px; }
+  20.00% { background-position: 0 -200px; }
+  21.67% { background-position: -100px -200px; }
+  23.33% { background-position: -200px -200px; }
+  25.00% { background-position: -300px -200px; }
+  26.67% { background-position: -400px -200px; }
+  28.33% { background-position: -500px -200px; }
+  30.00% { background-position: 0 -300px; }
+  31.67% { background-position: -100px -300px; }
+
+  /* 21~30 */
+  33.33% { background-position: -200px -300px; }
+  35.00% { background-position: -300px -300px; }
+  36.67% { background-position: -400px -300px; }
+  38.33% { background-position: -500px -300px; }
+  40.00% { background-position: 0 -400px; }
+  41.67% { background-position: -100px -400px; }
+  43.33% { background-position: -200px -400px; }
+  45.00% { background-position: -300px -400px; }
+  46.67% { background-position: -400px -400px; }
+  48.33% { background-position: -500px -400px; }
+
+  /* 31~40 */
+  50.00% { background-position: 0 -500px; }
+  51.67% { background-position: -100px -500px; }
+  53.33% { background-position: -200px -500px; }
+  55.00% { background-position: -300px -500px; }
+  56.67% { background-position: -400px -500px; }
+  58.33% { background-position: -500px -500px; }
+  60.00% { background-position: 0 -600px; }
+  61.67% { background-position: -100px -600px; }
+  63.33% { background-position: -200px -600px; }
+  65.00% { background-position: -300px -600px; }
+
+  /* 41~50 */
+  66.67% { background-position: -400px -600px; }
+  68.33% { background-position: -500px -600px; }
+  70.00% { background-position: 0 -700px; }
+  71.67% { background-position: -100px -700px; }
+  73.33% { background-position: -200px -700px; }
+  75.00% { background-position: -300px -700px; }
+  76.67% { background-position: -400px -700px; }
+  78.33% { background-position: -500px -700px; }
+  80.00% { background-position: 0 -800px; }
+  81.67% { background-position: -100px -800px; }
+
+  /* 51~60 */
+  83.33% { background-position: -200px -800px; }
+  85.00% { background-position: -300px -800px; }
+  86.67% { background-position: -400px -800px; }
+  88.33% { background-position: -500px -800px; }
+  90.00% { background-position: 0 -900px; }
+  91.67% { background-position: -100px -900px; }
+  93.33% { background-position: -200px -900px; }
+  95.00% { background-position: -300px -900px; }
+  96.67% { background-position: -400px -900px; }
+  98.33% { background-position: -500px -900px; }
+}
