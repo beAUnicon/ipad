@@ -48,12 +48,16 @@ const searchDelayEls = [...searchWrapEl.querySelectorAll('li')]
 const searchInputEl = searchWrapEl.querySelector('input')
 
 searchStarterEl.addEventListener('click', showSearch)
-searchCloserEl.addEventListener('click', hideSearch)
-searchShadowEl.addEventListener('click', hideSearch)
+searchCloserEl.addEventListener('click', function (event) {
+  event.stopPropagation() /* 이벤트 버블링을 끊어줌 그리하여 x버튼을 클릭한것이 textfield를 클릭한것이 아니게 됨 */
+  hideSearch()
+  /* 데스크탑 모드에서 textfield 안에 있는 x 버튼을 눌렀을때 이벤트 버블링 때문에 textfiled가 눌러진것으로 처리되고 그로인해 그상태에서 모바일 모드로 바꾸면 처음부터 textfiled가 눌린 즉 searching--mobile모드로 시작되게 됨 그러므로 처번에 살펴봤던 이벤트 버블링을 원하는 위치에서 스톱프로파게이션을 사용하여 적절히 끊어줌. */
+})
+searchShadowEl.addEventListener('click', hideSearch) 
 
 function showSearch() {
   headerEl.classList.add("searching")
-  document.documentElement.classList.add('fixed')
+  stopScroll()
   headerMenuEls.reverse().forEach(function (el, index) {
     el.style.transitionDelay = index * .4 / headerMenuEls.length + 's'
   })
@@ -67,7 +71,7 @@ function showSearch() {
 }
 function hideSearch() {
   headerEl.classList.remove('searching')
-  document.documentElement.classList.remove('fixed')
+  playScroll()
   headerMenuEls.reverse().forEach(function (el, index) {
     el.style.transitionDelay = index * .4 / headerMenuEls.length + 's'
   })
@@ -75,7 +79,77 @@ function hideSearch() {
     el.style.transitionDelay = index * .4 / searchDelayEls.length + 's'
   })
   searchDelayEls.reverse() //위에서 리버스 해줬으므로 다시 리버스해줘서 반복적으로 정상적인 사용을 가능하게 함
-  searchInputEl.value = ''
+  searchInputEl.value = '' // hide 할때 input안의 value 즉 글자를 빈문자로 초기화 하는 이유는 다시 켰을떄 이전에 쳤던 값들이 남아있을수있기 떄문이다.
+}
+function playScroll() {
+  document.documentElement.classList.remove('fixed') // css에 html에 fixed가 붙어있으면 스크롤이 보이지 않도록 설정되어있음.
+}
+function stopScroll() {
+  document.documentElement.classList.add('fixed')
+}
+
+// 헤더 메뉴 토글!
+const menuStarterEl = document.querySelector('header .menu-starter')
+menuStarterEl.addEventListener('click', function () {
+  if (headerEl.classList.contains('menuing')) {
+    headerEl.classList.remove('menuing')
+    searchInputEl.value = ''
+    playScroll()
+  }else {
+    headerEl.classList.add('menuing')
+    stopScroll()
+  }
+})
+
+// 헤더 검색!
+const searchTextFieldEl = document.querySelector('header .textfield')
+const searchCancelEl = document.querySelector('header .search-canceler')
+searchTextFieldEl.addEventListener('click', function () {
+  headerEl.classList.add('searching--mobile')
+  searchInputEl.focus() // 입력란을 눌렀을때 포커스가 되도록 함.
+})
+searchCancelEl.addEventListener('click', function () {
+  headerEl.classList.remove('searching--mobile')
+})
+
+//
+window.addEventListener('resize', function () { /* 사이즈가 바뀌었을때 */
+  if (window.innerWidth <= 740) { /* 만약 innerWidth가 740이하라면 header에서 searching 클래스 제거 */
+    headerEl.classList.remove('searching')
+  } else {
+    headerEl.classList.remove('searching--mobile') /* else는 if 조건이 아닌 모든 상황을 뜻하는데 if는 740이하 일때이므로 740이상의 경우 즉 모바일 버전이 아닌경우는 searching--mobilie을 header에서 없애줌 */
+  }
+})
+
+
+//
+const navEl = document.querySelector('nav')
+const navMenuToggleEl = navEl.querySelector('.menu-toggler')
+const navMenuShadowEl = navEl.querySelector('.shadow')
+
+navMenuToggleEl.addEventListener('click', function () {
+  if (navEl.classList.contains('menuing')) { // nav 태그에 menuing 클래스를 추가해서 메뉴를 보이게 혹은 보이지 않게 하는 방법이 있다.
+     //  mening 클래스가 있다면 제거하고 
+     hideNavMenu()
+  } else {
+    showNavMenu()
+  }
+})
+// nav를 클릭했을때에는 버블링을 차단하여 window를 클릭한것이 아니도록 함
+navEl.addEventListener('click', function (event) {
+  event.stopPropagation() /* nav영역을 클릭했을때에는 끊어서 window를 클릭한것이 아니도록 하여서 nav를 클릭했을때 버블링으로 인해서 보이지 않게 되지 않도록 함 */
+})
+// 배경을 클릭했을때 메뉴를 취소한다.
+navMenuShadowEl.addEventListener('click', hideNavMenu)
+
+// 모든 곳을 클릭했을때 메뉴를 숨긴다.
+window.addEventListener('click', hideNavMenu)
+
+function showNavMenu() {
+  navEl.classList.add('menuing')
+}
+function hideNavMenu() {
+  navEl.classList.remove('menuing')
 }
 
 // 요소의 가시성 관찰
@@ -154,6 +228,7 @@ navigations.forEach(function (nav) {
   mapEl.innerHTML = /* HTML */ `
     <h3>
       <span class="text">${nav.title}</span>
+      <span class="icon">+</span>
     </h3>
     <ul>
       ${mapList}
@@ -169,8 +244,13 @@ thisYearEl.textContent = new Date().getFullYear()
 
 
 
-
-
+const mapEls = document.querySelectorAll('footer .navigations .map')
+mapEls.forEach(function (el) {
+  const h3El = el.querySelector('h3') //가져온 el에서 h3부분을 찾아서 저장 왜냐하면 ul을 숨기고 있다가 h3를 클릭하면 나오게 하므로 h3을 클릭했을때 클래스를 추가하는 코드를 짜기 위해 h3를 찾아둬야함
+  h3El.addEventListener('click', function () {
+    el.classList.toggle('active') /* toggle은 해당 클래스가 없으면 해당하는 클래스를 add해주고 해당 클래스가 있으면 remove해줌 즉 자동으로 add와 remove의 역활을 같이 함ㅜ */
+  })
+})
 
 
 
@@ -192,6 +272,8 @@ const gonggiBtnEl = gonggiEl.querySelector('.check')
 
 gonggiBtnEl.addEventListener('click', function () {
   gonggiEl.classList.add('hide')
+  gonggiEl.classList.add('clear')
 })
+
 
 

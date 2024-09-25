@@ -40,6 +40,14 @@
 
 
       <ul class="menu">
+        <li class="menu-starter">
+          <a>
+            <div>
+              <span></span>
+              <span></span>
+            </div>
+          </a>
+        </li>
         <li class="apple-logo"><a href="javascript:void(0)">Apple</a></li>
         <li><a href="javascript:void(0)">스토어</a></li>
         <li><a href="javascript:void(0)">Mac</a></li>
@@ -73,12 +81,13 @@
       <div class="search-wrap"> <!-- width값이 1020인 inner의 width값을 100%로 받아 아래에 max-width를 달고 올 search를 가운데 위치할수있도록 함 왜냐하면 아래의 search는 width값을 가지지 않고 max-width값을 가지므로 콘텐츠의 넓이에 맞춰 줄어듦 그러므로 상위 요소에 넓이를 가지고있는 요소가 있으면 가운데에 위치하면 됨 -->
         <div class="search"> <!-- width값이 max-width로 선언되어 안에 들어가이쓴 콘텐츠의 크기에 맞춤 search에선 그런 역활을 하기에 가운데에 배치시킬 기준이 필요한데 그 역활을 위의 search wrap이 해주고있음 -->
           <div class="shadow"></div> <!--전체영역에 그림차를 추가하는 역활을 할친구 -->
-          <div class="textfield"> <!-- 텍스트 입력하는 공간을 관장 -->
+          <div class="textfield"> <!-- 텍스트 입력하는 공간을 관장 -->  
             <input type="text" placeholder="apple.com 검색" /> <!-- 말그대로 input태그  -->
             <div class="search-icon"></div> <!-- 돋보기 아이콘 -->
             <div class="search-closer"></div> <!-- 엑스 아이콘(닫기 아이콘) -->
           </div>
-          <div class="autocompletes">
+          <div class="search-canceler">취소</div> <!-- 모바일 모드의 취소버튼  -->
+          <div class="autocompletes"> <!-- 이런 의문이 들수있음 아니 왜 top값을 주지 않았을때 기본값인 top:0;이 적용되지 않지? 이유는 형제요소인 textfield때문임 해당 요소가 search 안에서 relative로 자리잡고있는데 그렇기 때문에 top값을 명시하지 않으면 그 형제요소의 아래에 배치됨 다시 말해 position값이 absolute여도 top값이나 left값과 같은 위치 지정 속성이 없다면 문서의 흐름 대로 즉 형제요소의 아래에 배치가 된다. 이유는 위치 속성을 설정하지 않았을 때, 브라우저가 요소를 HTML 작성 순서에 따라 기본적인 흐름(static)대로 배치하기 때문. -->
             <h3>빠른 링크</h3>
             <ul>
               <li><a href="javascript:void(0)">Apple Store 임시 휴무 관련 자주하는 질문</a></li>
@@ -91,6 +100,21 @@
         </div>
       </div>
 
+      <div class="clone-menu"> <!-- 데스크탑 메뉴에서 구현된 메뉴들을 로고를 제외하고 동일하게 사용하나 완전히 다른 곳에 위치하므로 clone-menu라는 이름으로 로고를 제외한 부분을 복사해서 가져옴 -->
+        <ul>
+          <li><a href="javascript:void(0)">스토어</a></li>
+          <li><a href="javascript:void(0)">Mac</a></li>
+          <li><a href="javascript:void(0)">iPad</a></li>
+          <li><a href="javascript:void(0)">iPhone</a></li>
+          <li><a href="javascript:void(0)">Watch</a></li>
+          <li><a href="javascript:void(0)">AirPods</a></li>
+          <li><a href="javascript:void(0)">TV 및 홈</a></li>
+          <li><a href="javascript:void(0)">Apple 독점 제공</a></li>
+          <li><a href="javascript:void(0)">엑세서리</a></li>
+          <li><a href="javascript:void(0)">고객지원</a></li>
+        </ul>
+      </div>
+
       
     </div>
    </header>
@@ -98,9 +122,12 @@
 
    <!-- Navigation -->
     <nav>
+      <div class="shadow"></div>
+      <div class="contents-bg"></div>
       <div class="inner">
 
         <h1>iPad</h1>
+        <div class="menu-toggler"></div>
         <ul class="menu">
           <li class="active"><a href="javascript:void(0)" >개요</a></li> <!-- 개요 부분만 클릭이 안되고 글자 색갈이 연한것은 해당 페이지가 세개의 옵션 그러니까 개요,iPad를 선택하는 이유, 제품 사양 메뉴중에서 개요 메뉴에 있다는 것을 뜻한다. 그러므로 iPad를 선택하는 이유 혹은 제품 사양 메뉴를 눌러 해당 페이지로 이동하면 해당 페이지에선 개요가 진하게 제대로 나오고 해당 페이지 메뉴만 클릭이 안되고 색갈이 연하게 될것이다. -->
           <li><a href="javascript:void(0)">iPad를 선택하는 이유</a></li>
@@ -754,6 +781,7 @@
            <!-- 창고사항 -->
 
            <section class="popup">
+            <div class="shadow"></div>
             <div class="popup-inner">
               <div class="popup-area">
                 <h1 class="pop-main">참고사항</h1>
